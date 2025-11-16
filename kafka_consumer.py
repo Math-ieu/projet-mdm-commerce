@@ -28,7 +28,7 @@ TOPICS = ['mdm-client-raw', 'mdm-product-raw', 'mdm-supplier-raw']
 DB_CONFIG = {
     'host': 'localhost',
     'port': 5432,
-    'database': 'openmetadata_db',
+    'database': 'openmetadata_db_2',
     'user': 'postgres',
     'password': 'password'
 }
