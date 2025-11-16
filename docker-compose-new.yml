@@ -259,4 +259,4 @@ services:
     networks:
       - mdm_net
     volumes:
-      pgadmin-data:
+      - pgadmin-data:/var/lib/pgadmin   
