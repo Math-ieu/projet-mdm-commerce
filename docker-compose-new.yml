@@ -126,139 +126,142 @@ services:
   # ===========================================
 # OPENMETADATA - MIGRATION
 # ===========================================
-execute-migrate-all:
-  container_name: mdm_migrate
-  image: docker.getcollate.io/openmetadata/server:1.10.6
-  command: "./bootstrap/openmetadata-ops.sh migrate"
-  environment:
-    OPENMETADATA_CLUSTER_NAME: mdm_cluster
-    SERVER_PORT: 8585
-    SERVER_ADMIN_PORT: 8586
-    LOG_LEVEL: INFO
-    
-    # PostgreSQL Configuration
-    DB_DRIVER_CLASS: org.postgresql.Driver
-    DB_SCHEME: postgresql
-    DB_USER: postgres
-    DB_USER_PASSWORD: password
-    DB_PASSWORD: password  # ← AJOUT
-    DB_HOST: mdm_postgresql  # ← CORRECTION
-    DB_PORT: 5432
-    OM_DATABASE: openmetadata_db
-    
-    # Elasticsearch Configuration
-    ELASTICSEARCH_HOST: mdm_elasticsearch  # ← CORRECTION
-    ELASTICSEARCH_PORT: 9200
-    ELASTICSEARCH_SCHEME: http
-    SEARCH_TYPE: elasticsearch
-    
-    # Authentication (Basic)
-    AUTHORIZER_CLASS_NAME: org.openmetadata.service.security.DefaultAuthorizer
-    AUTHORIZER_REQUEST_FILTER: org.openmetadata.service.security.JwtFilter
-    AUTHORIZER_ADMIN_PRINCIPALS: "[admin]"
-    AUTHENTICATION_PROVIDER: basic
-    AUTHENTICATION_PUBLIC_KEYS: "[http://localhost:8585/api/v1/system/config/jwks]"
-    AUTHENTICATION_ENABLE_SELF_SIGNUP: "true"
-    
-    # JWT Configuration
-    RSA_PUBLIC_KEY_FILE_PATH: "./conf/public_key.der"
-    RSA_PRIVATE_KEY_FILE_PATH: "./conf/private_key.der"
-    JWT_ISSUER: open-metadata.org
-    JWT_KEY_ID: Gb389a-9f76-gdjs-a92j-0242bk94356
-    
-    # Pipeline Service (désactivé car on utilise Kafka)
-    PIPELINE_SERVICE_CLIENT_ENABLED: "false"
-    
-  depends_on:
-    mdm_elasticsearch:  # ← CORRECTION (si vous utilisez "container_name")
-      condition: service_healthy
-    mdm_postgresql:  # ← CORRECTION
-      condition: service_healthy
-  networks:
-    - mdm_net
 
-# ===========================================
-# OPENMETADATA SERVER
-# ===========================================
-openmetadata-server:
-  container_name: mdm_openmetadata
-  image: docker.getcollate.io/openmetadata/server:1.10.6
-  restart: always
-  environment:
-    OPENMETADATA_CLUSTER_NAME: mdm_cluster
-    SERVER_PORT: 8585
-    SERVER_ADMIN_PORT: 8586
-    LOG_LEVEL: INFO
-    
-    # PostgreSQL Configuration
-    DB_DRIVER_CLASS: org.postgresql.Driver
-    DB_SCHEME: postgresql
-    DB_USER: postgres
-    DB_USER_PASSWORD: password
-    DB_PASSWORD: password  # ← AJOUT
-    DB_HOST: mdm_postgresql  # ← CORRECTION
-    DB_PORT: 5432
-    OM_DATABASE: openmetadata_db
-    
-    # Elasticsearch Configuration
-    ELASTICSEARCH_HOST: mdm_elasticsearch  # ← CORRECTION
-    ELASTICSEARCH_PORT: 9200
-    ELASTICSEARCH_SCHEME: http
-    SEARCH_TYPE: elasticsearch
-    
-    # Authentication
-    AUTHORIZER_CLASS_NAME: org.openmetadata.service.security.DefaultAuthorizer
-    AUTHORIZER_REQUEST_FILTER: org.openmetadata.service.security.JwtFilter
-    AUTHORIZER_ADMIN_PRINCIPALS: "[admin]"
-    AUTHENTICATION_PROVIDER: basic
-    AUTHENTICATION_PUBLIC_KEYS: "[http://localhost:8585/api/v1/system/config/jwks]"
-    AUTHENTICATION_ENABLE_SELF_SIGNUP: "true"
-    
-    # JWT Configuration
-    RSA_PUBLIC_KEY_FILE_PATH: "./conf/public_key.der"
-    RSA_PRIVATE_KEY_FILE_PATH: "./conf/private_key.der"
-    JWT_ISSUER: open-metadata.org
-    JWT_KEY_ID: Gb389a-9f76-gdjs-a92j-0242bk94356
-    
-    # Pipeline Service (désactivé)
-    PIPELINE_SERVICE_CLIENT_ENABLED: "false"
-    
-    # Heap Options
-    OPENMETADATA_HEAP_OPTS: -Xmx1G -Xms1G
-    
-  ports:
-    - "8585:8585"
-    - "8586:8586"
-  depends_on:
-    mdm_elasticsearch:  # ← CORRECTION
-      condition: service_healthy
-    mdm_postgresql:  # ← CORRECTION
-      condition: service_healthy
-    execute-migrate-all:
-      condition: service_completed_successfully
-  networks:
-    - mdm_net
-  healthcheck:
-    test: ["CMD", "wget", "-q", "--spider", "http://localhost:8586/healthcheck"]
-    interval: 30s
-    timeout: 10s
-    retries: 5
+  execute-migrate-all:
+    container_name: mdm_migrate
+    image: docker.getcollate.io/openmetadata/server:1.10.6
+    command: "./bootstrap/openmetadata-ops.sh migrate"
+    environment:
+      OPENMETADATA_CLUSTER_NAME: mdm_cluster
+      SERVER_PORT: 8585
+      SERVER_ADMIN_PORT: 8586
+      LOG_LEVEL: INFO
+      
+      # PostgreSQL Configuration
+      DB_DRIVER_CLASS: org.postgresql.Driver
+      DB_SCHEME: postgresql
+      DB_USER: postgres
+      DB_USER_PASSWORD: password
+      DB_PASSWORD: password  # ← AJOUT
+      DB_HOST: mdm_postgresql  # ← CORRECTION
+      DB_PORT: 5432
+      OM_DATABASE: openmetadata_db
+      
+      # Elasticsearch Configuration
+      ELASTICSEARCH_HOST: mdm_elasticsearch  # ← CORRECTION
+      ELASTICSEARCH_PORT: 9200
+      ELASTICSEARCH_SCHEME: http
+      SEARCH_TYPE: elasticsearch
+      
+      # Authentication (Basic)
+      AUTHORIZER_CLASS_NAME: org.openmetadata.service.security.DefaultAuthorizer
+      AUTHORIZER_REQUEST_FILTER: org.openmetadata.service.security.JwtFilter
+      AUTHORIZER_ADMIN_PRINCIPALS: "[admin]"
+      AUTHENTICATION_PROVIDER: basic
+      AUTHENTICATION_PUBLIC_KEYS: "[http://localhost:8585/api/v1/system/config/jwks]"
+      AUTHENTICATION_ENABLE_SELF_SIGNUP: "true"
+      
+      # JWT Configuration
+      RSA_PUBLIC_KEY_FILE_PATH: "./conf/public_key.der"
+      RSA_PRIVATE_KEY_FILE_PATH: "./conf/private_key.der"
+      JWT_ISSUER: open-metadata.org
+      JWT_KEY_ID: Gb389a-9f76-gdjs-a92j-0242bk94356
+      
+      # Pipeline Service (désactivé car on utilise Kafka)
+      PIPELINE_SERVICE_CLIENT_ENABLED: "false"
+      
+    depends_on:
+      mdm_elasticsearch:  # ← CORRECTION (si vous utilisez "container_name")
+        condition: service_healthy
+      mdm_postgresql:  # ← CORRECTION
+        condition: service_healthy
+    networks:
+      - mdm_net
+
+  # ===========================================
+  # OPENMETADATA SERVER
+  # ===========================================
+  openmetadata-server:
+    container_name: mdm_openmetadata
+    image: docker.getcollate.io/openmetadata/server:1.10.6
+    restart: always
+    environment:
+      OPENMETADATA_CLUSTER_NAME: mdm_cluster
+      SERVER_PORT: 8585
+      SERVER_ADMIN_PORT: 8586
+      LOG_LEVEL: INFO
+      
+      # PostgreSQL Configuration
+      DB_DRIVER_CLASS: org.postgresql.Driver
+      DB_SCHEME: postgresql
+      DB_USER: postgres
+      DB_USER_PASSWORD: password
+      DB_PASSWORD: password  # ← AJOUT
+      DB_HOST: mdm_postgresql  # ← CORRECTION
+      DB_PORT: 5432
+      OM_DATABASE: openmetadata_db
+      
+      # Elasticsearch Configuration
+      ELASTICSEARCH_HOST: mdm_elasticsearch  # ← CORRECTION
+      ELASTICSEARCH_PORT: 9200
+      ELASTICSEARCH_SCHEME: http
+      SEARCH_TYPE: elasticsearch
+      
+      # Authentication
+      AUTHORIZER_CLASS_NAME: org.openmetadata.service.security.DefaultAuthorizer
+      AUTHORIZER_REQUEST_FILTER: org.openmetadata.service.security.JwtFilter
+      AUTHORIZER_ADMIN_PRINCIPALS: "[admin]"
+      AUTHENTICATION_PROVIDER: basic
+      AUTHENTICATION_PUBLIC_KEYS: "[http://localhost:8585/api/v1/system/config/jwks]"
+      AUTHENTICATION_ENABLE_SELF_SIGNUP: "true"
+      
+      # JWT Configuration
+      RSA_PUBLIC_KEY_FILE_PATH: "./conf/public_key.der"
+      RSA_PRIVATE_KEY_FILE_PATH: "./conf/private_key.der"
+      JWT_ISSUER: open-metadata.org
+      JWT_KEY_ID: Gb389a-9f76-gdjs-a92j-0242bk94356
+      
+      # Pipeline Service (désactivé)
+      PIPELINE_SERVICE_CLIENT_ENABLED: "false"
+      
+      # Heap Options
+      OPENMETADATA_HEAP_OPTS: -Xmx1G -Xms1G
+      
+    ports:
+      - "8585:8585"
+      - "8586:8586"
+    depends_on:
+      mdm_elasticsearch:  # ← CORRECTION
+        condition: service_healthy
+      mdm_postgresql:  # ← CORRECTION
+        condition: service_healthy
+      execute-migrate-all:
+        condition: service_completed_successfully
+    networks:
+      - mdm_net
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8586/healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
 
   # ===========================================
   # PGADMIN (Interface PostgreSQL)
   # ===========================================
   pgadmin:
-    container_name: mdm_pgadmin
-    image: dpage/pgadmin4:latest
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: admin
-      PGADMIN_CONFIG_SERVER_MODE: "False"
-    ports:
-      - "5050:80"
-    depends_on:
-      - postgresql
-    networks:
-      - mdm_net
-    volumes:
-      - ./pgadmin-data:/var/lib/pgadmin
+      container_name: mdm_pgadmin
+      image: dpage/pgadmin4:latest
+      environment:
+        PGADMIN_DEFAULT_EMAIL: admin@admin.com
+        PGADMIN_DEFAULT_PASSWORD: admin
+        PGADMIN_CONFIG_SERVER_MODE: "False"
+      ports:
+        - "5050:80"
+      depends_on:
+        mdm_postgresql:  # ← CORRECTION
+          condition: service_healthy
+      networks:
+        - mdm_net
+      volumes:
+        - ./pgadmin-data:/var/lib/pgadmin
