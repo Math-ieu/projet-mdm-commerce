@@ -12,7 +12,7 @@ from datetime import datetime
 import time
 
 # Configuration
-logging.basicConfig(
+logging.basicConfig( 
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )

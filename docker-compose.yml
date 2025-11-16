@@ -23,7 +23,7 @@ services:
     command: "--work_mem=10MB"
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: password 
     expose:
       - 5432
     ports:

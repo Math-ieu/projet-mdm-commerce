@@ -14,7 +14,7 @@ from fuzzywuzzy import fuzz
 import re
 
 # Configuration
-logging.basicConfig(
+logging.basicConfig( 
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
