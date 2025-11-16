@@ -171,9 +171,9 @@ services:
       PIPELINE_SERVICE_CLIENT_ENABLED: "false"
       
     depends_on:
-      mdm_elasticsearch:  # ← CORRECTION (si vous utilisez "container_name")
+      elasticsearch:  # ← CORRECTION (si vous utilisez "container_name")
         condition: service_healthy
-      mdm_postgresql:  # ← CORRECTION
+      postgresql:  # ← CORRECTION
         condition: service_healthy
     networks:
       - mdm_net
@@ -231,9 +231,9 @@ services:
       - "8585:8585"
       - "8586:8586"
     depends_on:
-      mdm_elasticsearch:  # ← CORRECTION
+      elasticsearch:  # ← CORRECTION
         condition: service_healthy
-      mdm_postgresql:  # ← CORRECTION
+      postgresql:  # ← CORRECTION
         condition: service_healthy
       execute-migrate-all:
         condition: service_completed_successfully
@@ -259,7 +259,7 @@ services:
       ports:
         - "5050:80"
       depends_on:
-        mdm_postgresql:  # ← CORRECTION
+        postgresql:  # ← CORRECTION
           condition: service_healthy
       networks:
         - mdm_net
