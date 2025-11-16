@@ -28,7 +28,7 @@ services:
 
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
-  kafka-ui:
+  kafka-ui: 
     image: provectuslabs/kafka-ui:latest
     ports:
       - "9000:8080"   # <--- 9000 sur Azure / 8080 dans le conteneur
