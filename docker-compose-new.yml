@@ -139,8 +139,8 @@ services:
       # PostgreSQL Configuration
       DB_DRIVER_CLASS: org.postgresql.Driver
       DB_SCHEME: postgresql
-      DB_USER: openmetadata_user
-      DB_USER_PASSWORD: openmetadata_password
+      DB_USER: postgres
+      DB_USER_PASSWORD: password
       DB_HOST: postgresql
       DB_PORT: 5432
       OM_DATABASE: openmetadata_db
@@ -192,8 +192,8 @@ services:
       # PostgreSQL Configuration
       DB_DRIVER_CLASS: org.postgresql.Driver
       DB_SCHEME: postgresql
-      DB_USER: openmetadata_user
-      DB_USER_PASSWORD: openmetadata_password
+      DB_USER: postgres
+      DB_USER_PASSWORD: password
       DB_HOST: postgresql
       DB_PORT: 5432
       OM_DATABASE: openmetadata_db

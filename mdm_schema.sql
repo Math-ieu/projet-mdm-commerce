@@ -38,7 +38,7 @@ CREATE TABLE mdm_client_staging (
     industry VARCHAR(100),
     currency VARCHAR(3),
     payment_terms VARCHAR(50),
-    credit_limit DECIMAL(15,2), 
+    credit_limit DECIMAL(15,2),
     status VARCHAR(20),
     created_date DATE,
     load_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
